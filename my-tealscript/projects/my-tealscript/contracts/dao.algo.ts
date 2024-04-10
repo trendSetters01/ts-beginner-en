@@ -8,9 +8,25 @@ class Dao extends Contract {
 
   votesInFavor = GlobalStateKey<uint64>();
 
+  registeredASA = GlobalStateKey<AssetID>();
+
   // define a proposl
   createApplication(proposal: string): void {
     this.proposal.value = proposal;
+  }
+
+  //mint dao token
+  bootstrap(): AssetID {
+    verifyTxn(this.txn, { sender: this.app.creator });
+    assert(!this.registeredASA.exists);
+    const registeredASA = sendAssetCreation({
+      configAssetTotal: 1_000,
+      configAssetFreeze: this.app.address,
+    });
+
+    this.registeredASA.value = registeredASA;
+
+    return registeredASA;
   }
 
   vote(inFavor: boolean): void {
@@ -25,8 +41,11 @@ class Dao extends Contract {
     return this.proposal.value;
   }
 
-  getVotes(): [uint64, uint64] {
-    return [this.votesInFavor.value,this.votesTotal.value];
+  getRegisteredASA(): AssetID {
+    return this.registeredASA.value;
   }
 
+  getVotes(): [uint64, uint64] {
+    return [this.votesInFavor.value, this.votesTotal.value];
+  }
 }
