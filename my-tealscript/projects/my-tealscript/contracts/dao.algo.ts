@@ -29,7 +29,24 @@ class Dao extends Contract {
     return registeredASA;
   }
 
-  vote(inFavor: boolean): void {
+  register(registeredASA: AssetID): void {
+    assert(this.txn.sender.assetBalance(this.registeredASA.value) === 0);
+
+    sendAssetTransfer({
+      xferAsset: this.registeredASA.value,
+      assetReceiver: this.txn.sender,
+      assetAmount: 1,
+    });
+
+    sendAssetFreeze({
+      freezeAsset: this.registeredASA.value,
+      freezeAssetAccount: this.txn.sender,
+      freezeAssetFrozen: true,
+    });
+  }
+
+  vote(inFavor: boolean, registeredASA: AssetID): void {
+    assert(this.txn.sender.assetBalance(this.registeredASA.value) === 1);
     this.votesTotal.value = this.votesTotal.value + 1;
 
     if (inFavor) {
