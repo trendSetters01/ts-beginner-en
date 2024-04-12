@@ -4,7 +4,6 @@ import React, { useState } from 'react'
 import ConnectWallet from './components/ConnectWallet'
 import DaoCreateApplication from './components/DaoCreateApplication'
 import { DaoClient } from './contracts/DaoClient'
-import * as algokit from '@algorandfoundation/algokit-utils'
 
 interface HomeProps {
   DAOtypedClient: DaoClient

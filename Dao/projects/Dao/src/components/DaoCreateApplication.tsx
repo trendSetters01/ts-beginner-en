@@ -2,6 +2,7 @@
 import { ReactNode, useState } from 'react'
 import { Dao, DaoClient } from '../contracts/DaoClient'
 import { useWallet } from '@txnlab/use-wallet'
+import * as algokit from '@algorandfoundation/algokit-utils'
 
 /* Example usage
 <DaoCreateApplication
@@ -38,6 +39,11 @@ const DaoCreateApplication = (props: Props) => {
       },
       { sender },
     )
+    await props.typedClient.appClient.fundAppAccount({
+      sender,
+      amount: algokit.microAlgos(200_000)
+    });
+    await props.typedClient.bootstrap({}, { sender, sendParams: { fee: algokit.microAlgos(2_000) } })
     setLoading(false)
   }
 
