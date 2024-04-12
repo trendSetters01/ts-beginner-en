@@ -15,11 +15,34 @@
       }
     },
     {
+      "name": "bootstrap",
+      "args": [],
+      "returns": {
+        "type": "uint64"
+      }
+    },
+    {
+      "name": "register",
+      "args": [
+        {
+          "name": "registeredASA",
+          "type": "uint64"
+        }
+      ],
+      "returns": {
+        "type": "void"
+      }
+    },
+    {
       "name": "vote",
       "args": [
         {
           "name": "inFavor",
           "type": "bool"
+        },
+        {
+          "name": "registeredASA",
+          "type": "uint64"
         }
       ],
       "returns": {
@@ -31,6 +54,13 @@
       "args": [],
       "returns": {
         "type": "string"
+      }
+    },
+    {
+      "name": "getRegisteredASA",
+      "args": [],
+      "returns": {
+        "type": "uint64"
       }
     },
     {

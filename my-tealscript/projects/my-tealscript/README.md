@@ -1,3 +1,0 @@
-# Dao
-
-Welcome Phantom Pals!
