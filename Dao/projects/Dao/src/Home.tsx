@@ -34,16 +34,12 @@ const Home: React.FC<HomeProps> = ({ algodClient }) => {
   }
 
   return (
-    <div className="hero min-h-screen bg-black">
-      <div className="hero-content text-center rounded-lg p-6 max-w-md bg-white mx-auto">
+    <div className="hero min-h-screen bg-cover bg-center bg-gradient-to-r from-black to-purple-600">
+      <div className="hero-content text-center rounded-lg p-6 max-w-md bg-white mx-auto border border-black shadow-lg p-4 mb-4">
         <div className="max-w-md">
           <h1 className="text-4xl">
             Welcome to <div className="font-bold py-3">Phantom Pals DAO</div>
           </h1>
-          <h1 className="text-sm">
-            Address <div className="font-bold py-3">{activeAddress}</div>
-          </h1>
-
           <div className="grid">
             <button data-test-id="connect-wallet" className="btn m-2" onClick={toggleWalletModal}>
               Wallet Connection
