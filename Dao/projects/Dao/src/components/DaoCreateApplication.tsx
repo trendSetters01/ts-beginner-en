@@ -20,7 +20,7 @@ type Props = {
   buttonLoadingNode?: ReactNode
   buttonNode: ReactNode
   typedClient: DaoClient
-  // proposal: DaoCreateApplicationArgs['proposal']
+  setAppID: (appID: number) => void
 }
 
 const DaoCreateApplication = (props: Props) => {
@@ -34,16 +34,20 @@ const DaoCreateApplication = (props: Props) => {
     console.log(`Calling createApplication`)
     await props.typedClient.create.createApplication(
       {
-        // proposal: props.proposal,
         proposal,
       },
       { sender },
     )
+
     await props.typedClient.appClient.fundAppAccount({
       sender,
       amount: algokit.microAlgos(200_000)
     });
-    await props.typedClient.bootstrap({}, { sender, sendParams: { fee: algokit.microAlgos(2_000) } })
+    await props.typedClient.bootstrap({}, { sender, sendParams: { fee: algokit.microAlgos(2_000) } });
+
+    const { appId } = await props.typedClient.appClient.getAppReference();
+    props.setAppID(Number(appId))
+
     setLoading(false)
   }
 

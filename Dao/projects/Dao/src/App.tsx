@@ -43,14 +43,6 @@ export default function App() {
     token: algodConfig.token,
   })
 
-  const typedClient = new DaoClient(
-    {
-      resolveBy: 'id',
-      id: 0,
-    },
-    algodClient,
-  )
-
   const walletProviders = useInitializeProviders({
     providers: providersArray,
     nodeConfig: {
@@ -65,7 +57,7 @@ export default function App() {
   return (
     <SnackbarProvider maxSnack={3}>
       <WalletProvider value={walletProviders}>
-        <Home DAOtypedClient={typedClient} />
+        <Home algodClient={algodClient} />
       </WalletProvider>
     </SnackbarProvider>
   )
