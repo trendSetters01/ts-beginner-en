@@ -73,7 +73,7 @@ const Home: React.FC<HomeProps> = ({ algodClient }) => {
                     onChange={(e) => setProposal(e.target.value)} />
                 </>
               )}
-
+              
             {activeAddress && appID === 0 &&
               (<>
                 <div className="divider" />

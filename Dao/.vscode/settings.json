@@ -1,10 +1,13 @@
 {
-  // Disabled due to matangover.mypy extension not supporting monorepos
-  // To be addressed as part of https://github.com/matangover/mypy-vscode/issues/82
-  "mypy.enabled": false,
   "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "always",
-    "source.organizeImports": "always"
+    "source.fixAll.eslint": true,
+    "source.organizeImports": true
+  },
+  "dotenv.enableAutocloaking": false,
+  "jest.autoRun": {
+    "watch": false,
+    "onSave": "test-file"
   }
 }
