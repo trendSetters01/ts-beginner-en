@@ -1,6 +1,6 @@
 // src/components/Home.tsx
 import { useWallet } from '@txnlab/use-wallet'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ConnectWallet from './components/ConnectWallet'
 import DaoCreateApplication from './components/DaoCreateApplication'
 import { DaoClient } from './contracts/DaoClient'
@@ -14,6 +14,7 @@ const Home: React.FC<HomeProps> = ({ algodClient }) => {
   const [openWalletModal, setOpenWalletModal] = useState<boolean>(false)
   const [openDemoModal, setOpenDemoModal] = useState<boolean>(false)
   const [appID, setAppID] = useState<number>(0)
+  const [proposal, setProposal] = useState<string>('')
   const { activeAddress } = useWallet()
 
   const typedClient = new DaoClient(
@@ -24,6 +25,18 @@ const Home: React.FC<HomeProps> = ({ algodClient }) => {
     algodClient,
   )
 
+  const getProposal = async () => {
+    try {
+      const state = await typedClient.getGlobalState();
+      setProposal(state.proposal!.asString());
+    } catch (error) {
+      console.warn(error);
+      setProposal("Invalid App ID")
+    }
+  }
+  useEffect(() => {
+    getProposal()
+  }, [appID])
 
   const toggleWalletModal = () => {
     setOpenWalletModal(!openWalletModal)
@@ -45,11 +58,22 @@ const Home: React.FC<HomeProps> = ({ algodClient }) => {
               Wallet Connection
             </button>
             <div className="divider" />
+
             <h1 className="font-bold m-2">DAO App ID</h1>
             <input type="number"
               className="input input-bordered m-2"
               value={appID}
               onChange={(e) => setAppID(e.target.valueAsNumber || 0)} />
+
+            {activeAddress && appID !== 0 &&
+              (
+                <><div className="divider" />
+                  <h1 className="font-bold m-2">Proposal</h1>
+                  <textarea className='textarea textarea-bordered m-2' value={proposal}
+                    onChange={(e) => setProposal(e.target.value)} />
+                </>
+              )}
+
             {activeAddress && appID === 0 &&
               (<>
                 <div className="divider" />
