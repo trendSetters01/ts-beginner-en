@@ -25,13 +25,12 @@ const Home: React.FC<HomeProps> = ({ DAOtypedClient }) => {
   }
 
   return (
-    <div className="hero min-h-screen bg-teal-400">
+    <div className="hero min-h-screen bg-black">
       <div className="hero-content text-center rounded-lg p-6 max-w-md bg-white mx-auto">
         <div className="max-w-md">
           <h1 className="text-4xl">
-            Welcome to <div className="font-bold">the DAO</div>
+            Welcome to <div className="font-bold py-3">Phantom Pals DAO</div>
           </h1>
-          <p className="py-6">Phantom Pals Algorand DAO</p>
 
           <div className="grid">
             <button data-test-id="connect-wallet" className="btn m-2" onClick={toggleWalletModal}>
@@ -43,7 +42,7 @@ const Home: React.FC<HomeProps> = ({ DAOtypedClient }) => {
               buttonLoadingNode={<span className="loading loading-spinner" />}
               buttonNode="Create DAO"
               typedClient={DAOtypedClient}
-              proposal={proposal}
+              // proposal={proposal}
             />
           </div>
 
