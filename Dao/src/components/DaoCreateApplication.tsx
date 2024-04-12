@@ -30,6 +30,8 @@ const DaoCreateApplication = (props: Props) => {
   const sender = { signer, addr: activeAddress! }
 
   const callMethod = async () => {
+    //@ts-ignore
+    console.warn(algokit.microAlgos(200_000));
     setLoading(true)
     console.log(`Calling createApplication`)
     await props.typedClient.create.createApplication(
@@ -41,8 +43,10 @@ const DaoCreateApplication = (props: Props) => {
 
     await props.typedClient.appClient.fundAppAccount({
       sender,
+      //@ts-ignore
       amount: algokit.microAlgos(200_000)
     });
+    //@ts-ignore
     await props.typedClient.bootstrap({}, { sender, sendParams: { fee: algokit.microAlgos(2_000) } });
 
     const { appId } = await props.typedClient.appClient.getAppReference();
