@@ -5,6 +5,8 @@ import ConnectWallet from './components/ConnectWallet'
 import DaoCreateApplication from './components/DaoCreateApplication'
 import { DaoClient } from './contracts/DaoClient'
 import algosdk from 'algosdk'
+import DaoGetVotes from './components/DaoGetVotes'
+import DaoRegister from './components/DaoRegister'
 
 interface HomeProps {
   algodClient: algosdk.Algodv2
@@ -15,6 +17,7 @@ const Home: React.FC<HomeProps> = ({ algodClient }) => {
   const [openDemoModal, setOpenDemoModal] = useState<boolean>(false)
   const [appID, setAppID] = useState<number>(0)
   const [proposal, setProposal] = useState<string>('')
+  const [registeredASA, setRegisteredASA] = useState<number>(0)
   const { activeAddress } = useWallet()
 
   const typedClient = new DaoClient(
@@ -25,17 +28,18 @@ const Home: React.FC<HomeProps> = ({ algodClient }) => {
     algodClient,
   )
 
-  const getProposal = async () => {
+  const getState = async () => {
     try {
       const state = await typedClient.getGlobalState();
       setProposal(state.proposal!.asString());
+      setRegisteredASA(state.registeredASA!.asNumber() || 0);
     } catch (error) {
       console.warn(error);
       setProposal("Invalid App ID")
     }
   }
   useEffect(() => {
-    getProposal()
+    getState()
   }, [appID])
 
   const toggleWalletModal = () => {
@@ -47,8 +51,8 @@ const Home: React.FC<HomeProps> = ({ algodClient }) => {
   }
 
   return (
-    <div className="hero min-h-screen bg-cover bg-center bg-gradient-to-r from-black to-purple-600">
-      <div className="hero-content text-center rounded-lg p-6 max-w-md bg-white mx-auto border border-black shadow-lg p-4 mb-4">
+    <div className="hero min-h-screen bg-cover bg-center">
+      <div className="hero-content text-center rounded-lg p-6 max-w-md bg-white mx-1)">
         <div className="max-w-md">
           <h1 className="text-4xl">
             Welcome to <div className="font-bold py-3">Phantom Pals DAO</div>
@@ -73,8 +77,10 @@ const Home: React.FC<HomeProps> = ({ algodClient }) => {
                     onChange={(e) => setProposal(e.target.value)} />
                 </>
               )}
-              
-            {activeAddress && appID === 0 &&
+
+            {activeAddress &&
+              // appID === 0 
+              // &&
               (<>
                 <div className="divider" />
                 <DaoCreateApplication
@@ -85,6 +91,54 @@ const Home: React.FC<HomeProps> = ({ algodClient }) => {
                   setAppID={setAppID}
                 />
               </>
+              )}
+            {activeAddress &&
+              // appID === 0 
+              // &&
+              (<div>
+                <div className="divider" />
+                <DaoRegister
+                  buttonClass="btn m-2"
+                  buttonLoadingNode={<span className="loading loading-spinner" />}
+                  buttonNode="Register to Vote"
+                  typedClient={typedClient}
+                  registeredASA={registeredASA}
+                  algodClient={algodClient}
+                />
+                {/* <div className="divider" />
+                <DaoGetVotes
+                  buttonClass="btn m-2"
+                  buttonLoadingNode={<span className="loading loading-spinner" />}
+                  buttonNode="Call getVotes"
+                  typedClient={typedClient} inFavor={false} /> */}
+              </div>
+              )}
+            {activeAddress &&
+              // appID === 0 
+              // &&
+              (<div>
+                <div className="divider" />
+                <div className="flex w-full">
+                  <div className="grid h-20 flex-grow card rounded-box place-items-center">
+                    <DaoGetVotes
+                      buttonClass="btn m-2"
+                      buttonLoadingNode={<span className="loading loading-spinner" />}
+                      buttonNode="Vote For"
+                      typedClient={typedClient}
+                      inFavor={true}
+                    />
+                  </div>
+                  <div className="divider divider-horizontal">OR</div>
+                  <div className="grid h-20 flex-grow card rounded-box place-items-center">
+                    <DaoGetVotes
+                      buttonClass="btn m-2"
+                      buttonLoadingNode={<span className="loading loading-spinner" />}
+                      buttonNode="Vote Against"
+                      typedClient={typedClient}
+                      inFavor={false}
+                    /></div>
+                </div>
+              </div>
               )}
           </div>
 
